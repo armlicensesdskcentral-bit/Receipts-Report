@@ -20,12 +20,15 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython==0.29.36 virtualenv
       - name: Build APK
+        env:
+          PIP_CONSTRAINT: ${{ github.workspace }}/constraints.txt
         run: |
+          echo "cython==0.29.36" > constraints.txt
           buildozer -v android debug > build.log 2>&1 || {
             echo "===== ERROR LINES ====="
-            grep -n -E "error:|Exception|FAILED|went wrong|No such file|not found" build.log | grep -v -E "Werror|Wno-|warning" | sed -E 's#^.*/other_builds/##' | cut -c1-400 | tail -n 30
+            grep -n -E "Error compiling Cython|error:|Exception|FAILED|went wrong" build.log | grep -v -E "Werror|Wno-|warning|no input files" | sed -E 's#^.*/other_builds/##' | cut -c1-300 | tail -n 30
             echo "===== LAST 25 LINES ====="
-            tail -n 25 build.log | sed -E 's#^.*/other_builds/##' | cut -c1-400
+            tail -n 25 build.log | cut -c1-220
             exit 1
           }
       - name: Upload APK
