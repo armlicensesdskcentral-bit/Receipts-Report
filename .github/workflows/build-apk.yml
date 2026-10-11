@@ -19,8 +19,9 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install buildozer cython==0.29.36 virtualenv
-      - name: Build APK
-        run: buildozer -v android debug
+            - name: Build APK
+        run: |
+          buildozer -v android debug > build.log 2>&1 || { grep -n -i -E "error|exception|failed" build.log | grep -v -i -E "warning|Werror|Wno" | cut -c1-220 | tail -n 40; exit 1; }
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
