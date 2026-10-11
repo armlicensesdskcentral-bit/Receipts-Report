@@ -23,9 +23,9 @@ jobs:
         run: |
           buildozer -v android debug > build.log 2>&1 || {
             echo "===== ERROR LINES ====="
-            grep -n -E "error:|Exception|FAILED|went wrong|No such file|not found" build.log | grep -v -E "Werror|Wno-|warning" | cut -c1-220 | tail -n 30
+            grep -n -E "error:|Exception|FAILED|went wrong|No such file|not found" build.log | grep -v -E "Werror|Wno-|warning" | sed -E 's#^.*/other_builds/##' | cut -c1-400 | tail -n 30
             echo "===== LAST 25 LINES ====="
-            tail -n 25 build.log | cut -c1-220
+            tail -n 25 build.log | sed -E 's#^.*/other_builds/##' | cut -c1-400
             exit 1
           }
       - name: Upload APK
