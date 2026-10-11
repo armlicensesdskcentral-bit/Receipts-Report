@@ -19,9 +19,15 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install buildozer cython==0.29.36 virtualenv
-            - name: Build APK
+      - name: Build APK
         run: |
-          buildozer -v android debug > build.log 2>&1 || { grep -n -i -E "error|exception|failed" build.log | grep -v -i -E "warning|Werror|Wno" | cut -c1-220 | tail -n 40; exit 1; }
+          buildozer -v android debug > build.log 2>&1 || {
+            echo "===== ERROR LINES ====="
+            grep -n -E "error:|Exception|FAILED|went wrong|No such file|not found" build.log | grep -v -E "Werror|Wno-|warning" | cut -c1-220 | tail -n 30
+            echo "===== LAST 25 LINES ====="
+            tail -n 25 build.log | cut -c1-220
+            exit 1
+          }
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
