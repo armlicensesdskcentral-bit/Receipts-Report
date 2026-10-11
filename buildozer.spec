@@ -5,12 +5,12 @@ package.domain = org.saanjh
 source.dir = .
 source.include_exts = py,png,jpg,kv,atlas
 version = 1.0
-requirements = python3,kivy==2.3.0,openpyxl,et_xmlfile,pyjnius,android,androidstorage4kivy
+requirements = python3==3.10.12,hostpython3==3.10.12,kivy==2.2.1,openpyxl,et_xmlfile,pyjnius,android,androidstorage4kivy
 orientation = portrait
 fullscreen = 0
 android.api = 33
 android.minapi = 24
-android.archs = arm64-v8a, armeabi-v7a
+android.archs = arm64-v8a
 android.ndk = 25b
 p4a.branch = v2024.01.21
 android.accept_sdk_license = True
